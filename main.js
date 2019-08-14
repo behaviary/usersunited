@@ -39,7 +39,7 @@ function renderMessages(messages) {
     // .empty()
     .append(objs.reverse());
   $("#refresh-span").removeClass(animateClass);
-  lastIndex = messages[messages.length - 1].index;
+  lastIndex = Number(messages[messages.length - 1].index);
 }
 
 // Calls view function on the contract and sets up timeout to be called again in 5 seconds
