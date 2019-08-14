@@ -1,6 +1,12 @@
-# Greeter example in AssemblyScript
+# Users United
 
-## Description
+## NEAR protocol
 
-The contract implements a single function to return a greeting.
-For instructions on how  to run this  project, please follow our online tutorial  https://docs.nearprotocol.com/quick-start/local-development
+### Description
+
+See:
+
+- `assembly/main.ts` for contract code
+- `assembly/model.ts` for data structures
+- `src/main.js` for wallet integration and contract use with `nearlib`
+- `src/index.html` for HTML part
