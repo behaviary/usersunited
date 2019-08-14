@@ -59,8 +59,9 @@ function submitMessage() {
   let text = $("#text-message").val();
   $("#text-message").val("");
   // Calls the addMessage on the contract with arguments {text=text}.
+  const { id, name } = fbData;
   contract
-    .addMessage({ text })
+    .addMessage({ text, id, name })
     .then(() => {
       // Starting refresh animation
       $("#refresh-span").addClass(animateClass);
@@ -71,19 +72,19 @@ function submitMessage() {
     })
     .catch(console.error);
 }
-accountId = null;
+const fbData = {};
 function signedInFlow() {
   // Hiding sign-in html parts and showing post message things
   $("#sign-in-container").addClass("hidden");
   $("#guest-book-container").removeClass("hidden");
   $("#logout-option").removeClass("hidden");
 
-  // Displaying the accountId
   FB.api("/me", { fields: ["picture", "name", "email"] }, function({
     name,
     id,
     picture
   }) {
+    Object.assign(fbData, { name, id, picture });
     $(".account-id").text(name);
     $("#fb-picture").attr("src", picture.data.url);
     $("#fb-picture").attr("height", picture.data.height);
@@ -119,16 +120,26 @@ async function init() {
   );
 
   contract = await near.loadContract(nearConfig.contractName, {
-    viewMethods: ["getMessages"],
+    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
     changeMethods: ["addMessage"]
   });
 
-  // contract = new nearlib.Contract(nearConfig.contractName, {
-  //   viewMethods: ["getMessages"],
-  //   changeMethods: ["addMessage"]
-  // });
+  // and I also saw a warning msg about deprecation on
+  // ```
+  // contract = await near.loadContract(nearConfig.contractName, {
+  //     viewMethods: ["getMessages"],
+  //     changeMethods: ["addMessage"]
+  //   });
+  // ```
+  // and I saw the new api on docs
+  // ```
+  // contract = await near.loadContract(nearConfig.contractName, {
+  //     viewMethods: ["getMessages"],
+  //     changeMethods: ["addMessage"]
+  //   });
+  // ```
+  // it didn't work as I expected... I'm sorry throwing out problems at once
 
-  // Initializing messages and starting auto-refreshing.
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
