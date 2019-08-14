@@ -26,7 +26,7 @@ function renderMessages(messages) {
         .append([
           $("<div/>")
             .addClass("col-sm-3")
-            .append($("<strong/>").text(messages[i].sender)),
+            .append($("<strong/>").text(messages[i].name)),
           $("<div/>")
             .addClass("col-sm-9")
             .addClass("message-text")
@@ -35,7 +35,7 @@ function renderMessages(messages) {
     );
   }
   $("#messages")
-    .empty()
+    // .empty()
     .append(objs.reverse());
   $("#refresh-span").removeClass(animateClass);
 }
@@ -60,7 +60,7 @@ function refreshMessages() {
   // Calling the contract to read messages which makes a call to devnet.
   // The read call works even if the Account ID is not provided.
   contract
-    .getMessages({})
+    .getNextMessages({})
     .then(renderMessages)
     .catch(console.log);
 }
