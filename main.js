@@ -171,7 +171,6 @@ async function init() {
       }
       console.log(response);
     });
-    signedInFlow();
   }
 }
 
