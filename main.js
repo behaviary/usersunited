@@ -18,6 +18,7 @@ function signedOutFlow() {
 }
 // Renders given array of messages
 function renderMessages(messages) {
+  console.log(messages);
   let objs = [];
   for (let i = 0; i < messages.length; ++i) {
     objs.push(
@@ -71,6 +72,7 @@ function submitMessage() {
   $("#text-message").val("");
   // Calls the addMessage on the contract with arguments {text=text}.
   const { id, name } = fbData;
+  console.log(fbData);
   contract
     .addMessage({ text, id, name })
     .then(() => {
