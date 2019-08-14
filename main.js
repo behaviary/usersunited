@@ -136,27 +136,15 @@ async function init() {
     )
   );
   window.walletAccount = new nearlib.WalletAccount(window.near);
-  contract = await near.loadContract(nearConfig.contractName, {
-    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
-    changeMethods: ["addMessage"],
-    sender: walletAccount.getAccountId()
-  });
+  // contract = await near.loadContract(nearConfig.contractName, {
+  //   viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
+  //   changeMethods: ["addMessage"]
+  // });
 
-  // and I also saw a warning msg about deprecation on
-  // ```
-  // contract = await near.loadContract(nearConfig.contractName, {
-  //     viewMethods: ["getMessages"],
-  //     changeMethods: ["addMessage"]
-  //   });
-  // ```
-  // and I saw the new api on docs
-  // ```
-  // contract = await near.loadContract(nearConfig.contractName, {
-  //     viewMethods: ["getMessages"],
-  //     changeMethods: ["addMessage"]
-  //   });
-  // ```
-  // it didn't work as I expected... I'm sorry throwing out problems at once
+  contract = new nearlib.Contract(walletAccount, nearConfig.contractName, {
+    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
+    changeMethods: ["addMessage"]
+  });
 
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
@@ -173,7 +161,6 @@ async function init() {
     });
   }
 }
-
 
 var finished_rendering = function() {
   console.log("finished rendering plugins");
