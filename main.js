@@ -26,29 +26,30 @@ function renderMessages(messages) {
         .addClass("row")
         .append([
           $("<div/>")
-            .addClass("col-sm-2")
-            .append($("<strong/>").text(messages[i].name)),
-          $("<div/>")
-            .addClass("col-sm-2")
+            .addClass("col-sm-3")
             .append(
-              $("<strong/>").text(
-                "User #" +
-                  String(messages[i].index) +
-                  " is boycotting face because"
+              $("<div/>").text(
+                `User #${String(messages[i].index)}: ${messages[i].name}`
               )
             ),
           $("<div/>")
-            .addClass("col-sm-8")
+            .addClass("col-sm-3")
+            .append($("<strong/>").text(" is boycotting face because")),
+          $("<div/>")
+            .addClass("col-sm-6")
             .addClass("message-text")
             .text(messages[i].text)
         ])
     );
   }
+  // objs.reverse();
   $("#messages")
     // .empty()
-    .append(objs.reverse());
+    .append(objs);
   $("#refresh-span").removeClass(animateClass);
-  lastIndex = Number(messages[messages.length - 1].index) + 1;
+  if (messages.length) {
+    lastIndex = Number(messages[messages.length - 1].index) + 1;
+  }
 }
 
 // Calls view function on the contract and sets up timeout to be called again in 5 seconds
