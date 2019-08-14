@@ -39,10 +39,12 @@ function renderMessages(messages) {
     // .empty()
     .append(objs.reverse());
   $("#refresh-span").removeClass(animateClass);
+  lastIndex = messages[messages.length - 1].index;
 }
 
 // Calls view function on the contract and sets up timeout to be called again in 5 seconds
 // It only calls the contract if the this page/tab is active.
+lastIndex = 0;
 function refreshMessages() {
   // If we already have a timeout scheduled, cancel it
   if (!!refreshTimeout) {
@@ -61,7 +63,7 @@ function refreshMessages() {
   // Calling the contract to read messages which makes a call to devnet.
   // The read call works even if the Account ID is not provided.
   contract
-    .getRangeMessages({ start: 0 })
+    .getRangeMessages({ start: lastIndex })
     .then(renderMessages)
     .catch(console.log);
 }
