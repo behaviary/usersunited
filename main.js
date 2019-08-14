@@ -71,7 +71,7 @@ function submitMessage() {
     })
     .catch(console.error);
 }
-
+accountId = null;
 function signedInFlow() {
   // Hiding sign-in html parts and showing post message things
   $("#sign-in-container").addClass("hidden");
@@ -119,6 +119,14 @@ async function init() {
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
+  FB.getLoginStatus(function(response) {
+    if (response.status === "connected") {
+      signedInFlow();
+      accountId = response.authResponse.userId;
+      console.log(response.authResponse.accessToken);
+    }
+    console.log(response);
+  });
 }
 
 init().catch(console.error);
@@ -127,10 +135,5 @@ var finished_rendering = function() {
   var spinner = document.getElementById("spinner");
   spinner.removeAttribute("style");
   spinner.removeChild(spinner.childNodes[0]);
-  FB.getLoginStatus(function(response) {
-    if (response.status === "connected") {
-      console.log(response.authResponse.accessToken);
-    }
-  });
 };
 FB.Event.subscribe("xfbml.render", finished_rendering);
