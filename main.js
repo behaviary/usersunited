@@ -26,10 +26,19 @@ function renderMessages(messages) {
         .addClass("row")
         .append([
           $("<div/>")
-            .addClass("col-sm-3")
+            .addClass("col-sm-2")
             .append($("<strong/>").text(messages[i].name)),
           $("<div/>")
-            .addClass("col-sm-9")
+            .addClass("col-sm-2")
+            .append(
+              $("<strong/>").text(
+                "User #" +
+                  String(messages[i].index) +
+                  " is boycotting face because"
+              )
+            ),
+          $("<div/>")
+            .addClass("col-sm-8")
             .addClass("message-text")
             .text(messages[i].text)
         ])
@@ -39,7 +48,7 @@ function renderMessages(messages) {
     // .empty()
     .append(objs.reverse());
   $("#refresh-span").removeClass(animateClass);
-  lastIndex = Number(messages[messages.length - 1].index);
+  lastIndex = Number(messages[messages.length - 1].index) + 1;
 }
 
 // Calls view function on the contract and sets up timeout to be called again in 5 seconds
