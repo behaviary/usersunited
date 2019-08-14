@@ -62,7 +62,7 @@ function refreshMessages() {
     refreshTimeout = null;
   }
   // Schedules a new timeout
-  refreshTimeout = setTimeout(refreshMessages, 5000);
+  refreshTimeout = setTimeout(refreshMessages, 60000);
   // Checking if the page is not active and exits without requesting messages from the chain
   // to avoid unnecessary queries to the devnet.
   if (document.hidden) {
