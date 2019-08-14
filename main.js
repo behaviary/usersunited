@@ -79,7 +79,15 @@ function signedInFlow() {
   $("#logout-option").removeClass("hidden");
 
   // Displaying the accountId
-  $(".account-id").text(accountId);
+  FB.api("/me", { fields: ["picture", "name", "email"] }, function({
+    name,
+    id,
+    picture
+  }) {
+    $(".account-id").text(name);
+    $("#fb-picture").attr("src", picture.data.url);
+    $("#fb-picture").attr("height", picture.data.height);
+  });
 
   // Focusing on the enter message field.
   $("#text-message").focus();
@@ -122,8 +130,6 @@ async function init() {
   FB.getLoginStatus(function(response) {
     if (response.status === "connected") {
       signedInFlow();
-      accountId = response.authResponse.userId;
-      console.log(response.authResponse.accessToken);
     }
     console.log(response);
   });
