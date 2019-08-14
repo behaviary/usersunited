@@ -132,8 +132,9 @@ async function init() {
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
-  $("#login-button").click(() => {
+  $("#logout-button").click(() => {
     FB.logout();
+    window.location.replace(window.location.origin + window.location.pathname);
   });
   FB.getLoginStatus(function(response) {
     if (response.status === "connected") {
