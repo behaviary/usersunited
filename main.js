@@ -141,6 +141,7 @@ async function init() {
     changeMethods: ["addMessage"],
     sender: walletAccount.getAccountId()
   });
+  console.log(contract, walletAccount);
 
   // contract = new nearlib.Contract(walletAccount, nearConfig.contractName, {
   //   viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
