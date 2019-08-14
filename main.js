@@ -5,6 +5,17 @@ const loadingHtml =
 const appTitle = "Users United";
 let refreshTimeout;
 
+function signedOutFlow() {
+  $("#login-button").click(() => {
+    walletAccount.requestSignIn(
+      // The contract name that would be authorized to be called by the user's account.
+      window.nearConfig.contractName,
+      appTitle
+      // We can also provide URLs to redirect on success and failure.
+      // The current URL is used by default.
+    );
+  });
+}
 // Renders given array of messages
 function renderMessages(messages) {
   let objs = [];
@@ -92,7 +103,11 @@ function signedInFlow() {
 
   // Focusing on the enter message field.
   $("#text-message").focus();
-
+  $("#logout-button").click(() => {
+    walletAccount.signOut();
+    FB.logout();
+    window.location.replace(window.location.origin + window.location.pathname);
+  });
   // Enablid enter key to send messages as well.
   $("#text-message").keypress(function(e) {
     if (e.which == 13) {
@@ -118,10 +133,11 @@ async function init() {
       nearConfig
     )
   );
-
+  window.walletAccount = new nearlib.WalletAccount(window.near);
   contract = await near.loadContract(nearConfig.contractName, {
     viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
-    changeMethods: ["addMessage"]
+    changeMethods: ["addMessage"],
+    sender: walletAccount.getAccountId()
   });
 
   // and I also saw a warning msg about deprecation on
@@ -143,16 +159,18 @@ async function init() {
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
-  $("#logout-button").click(() => {
-    FB.logout();
-    window.location.replace(window.location.origin + window.location.pathname);
-  });
-  FB.getLoginStatus(function(response) {
-    if (response.status === "connected") {
-      signedInFlow();
-    }
-    console.log(response);
-  });
+
+  if (!walletAccount.isSignedIn()) {
+    signedOutFlow();
+  } else {
+    FB.getLoginStatus(function(response) {
+      if (response.status === "connected") {
+        signedInFlow();
+      }
+      console.log(response);
+    });
+    signedInFlow();
+  }
 }
 
 init().catch(console.error);
