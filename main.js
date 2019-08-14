@@ -137,7 +137,7 @@ async function init() {
   );
   window.walletAccount = new nearlib.WalletAccount(window.near);
   contract = await near.loadContract(nearConfig.contractName, {
-    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
+    viewMethods: ["getMessages", "getRangeMessages"],
     changeMethods: ["addMessage"],
     sender: walletAccount.getAccountId()
   });
