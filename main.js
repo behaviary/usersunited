@@ -61,7 +61,7 @@ function refreshMessages() {
   // Calling the contract to read messages which makes a call to devnet.
   // The read call works even if the Account ID is not provided.
   contract
-    .getNextMessages({})
+    .getRangeMessages({ start: 0 })
     .then(renderMessages)
     .catch(console.log);
 }
