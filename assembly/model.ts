@@ -1,5 +1,8 @@
 // Exporting a new class PostedMessage so it can be used outside of this file.
 export class PostedMessage {
-  sender: string;
+  id: string;
+  name: string;
   text: string;
+  index: u64;
+  // date: string;
 }

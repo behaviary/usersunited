@@ -20,6 +20,43 @@
       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
       crossorigin="anonymous"
     />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/gh/nearprotocol/nearlib@0.11.0/dist/nearlib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="./config.js"></script>
+    <script src="./main.js"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: "384002515644565",
+          cookie: true,
+          xfbml: true,
+          version: "v4.0"
+        });
+
+        FB.AppEvents.logPageView();
+        FB.Event.subscribe("xfbml.render", finished_rendering);
+        init().catch(console.error);
+      };
+
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,6 +90,13 @@
     </style>
   </head>
   <body style="padding-top: 70px; padding-bottom: 30px;">
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v4.0&appId=384002515644565&autoLogAppEvents=1"
+    ></script>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -88,16 +132,20 @@
     <div class="container" role="main">
       <h3>
         Messages:
-        <button id="refresh-button" class="btn btn-sm btn-default">
-          <span id="refresh-span" class="glyphicon glyphicon-refresh"></span>
-        </button>
       </h3>
+      <!-- <button id="prepend-button" class="btn btn-sm btn-default">
+        <span id="refresh-span" class="glyphicon glyphicon-refresh"></span>
+      </button> -->
       <div id="messages"></div>
+      <button id="refresh-button" class="btn btn-sm btn-default">
+        <span id="refresh-span" class="glyphicon glyphicon-refresh"></span>
+      </button>
       <hr />
       <div id="sign-in-container">
         <h2>Hello stranger! Who are you?</h2>
         <div id="login-form">
           <div class="col-md-4">
+            <button id="login-button">near login</button>
             <div
               id="spinner"
               style="
@@ -123,7 +171,10 @@
 
       <div id="guest-book-container" class="hidden">
         <div id="hello">
-          <h2 id="hello">Hi, <span class="account-id"></span>!</h2>
+          <h2 id="hello">
+            <img src="" id="fb-picture" alt="fb-picture" /> Hi,
+            <span class="account-id"></span>!
+          </h2>
         </div>
         <div class="row">
           <div class="col-sm-10">
@@ -142,50 +193,5 @@
         </div>
       </div>
     </div>
-    <div id="fb-root"></div>
-    <script
-      async
-      defer
-      crossorigin="anonymous"
-      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v4.0&appId=384002515644565&autoLogAppEvents=1"
-    ></script>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/gh/nearprotocol/nearlib@0.11.0/dist/nearlib.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="./config.js"></script>
-    <script src="./main.js"></script>
-
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId: "384002515644565",
-          cookie: true,
-          xfbml: true,
-          version: "v4.0"
-        });
-
-        FB.AppEvents.logPageView();
-      };
-
-      (function(d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "facebook-jssdk");
-    </script>
   </body>
 </html>
