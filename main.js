@@ -123,10 +123,18 @@ async function init() {
     changeMethods: ["addMessage"]
   });
 
+  // contract = new nearlib.Contract(nearConfig.contractName, {
+  //   viewMethods: ["getMessages"],
+  //   changeMethods: ["addMessage"]
+  // });
+
   // Initializing messages and starting auto-refreshing.
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
+  $("#login-button").click(() => {
+    FB.logout();
+  });
   FB.getLoginStatus(function(response) {
     if (response.status === "connected") {
       signedInFlow();
