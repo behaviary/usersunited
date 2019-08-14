@@ -166,7 +166,8 @@ async function init() {
   $("a.wallet")
     .removeClass("disabled")
     .attr("href", nearConfig.walletUrl);
-  $("#messages").html(loadingHtml);
+  // $("#messages").html(loadingHtml);
+
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
 
