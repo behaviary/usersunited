@@ -163,7 +163,9 @@ async function init() {
   //   }
   // );
   console.log(contract, walletAccount);
-
+  $("a.wallet")
+    .removeClass("disabled")
+    .attr("href", nearConfig.walletUrl);
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
