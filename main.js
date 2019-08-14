@@ -136,15 +136,16 @@ async function init() {
     )
   );
   window.walletAccount = new nearlib.WalletAccount(window.near);
-  // contract = await near.loadContract(nearConfig.contractName, {
+  contract = await near.loadContract(nearConfig.contractName, {
+    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
+    changeMethods: ["addMessage"],
+    sender: walletAccount.getAccountId()
+  });
+
+  // contract = new nearlib.Contract(walletAccount, nearConfig.contractName, {
   //   viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
   //   changeMethods: ["addMessage"]
   // });
-
-  contract = new nearlib.Contract(walletAccount, nearConfig.contractName, {
-    viewMethods: ["getMessages", "getPrevMessages", "getNextMessages"],
-    changeMethods: ["addMessage"]
-  });
 
   $("#messages").html(loadingHtml);
   $("#refresh-button").click(refreshMessages);
