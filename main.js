@@ -174,12 +174,12 @@ async function init() {
   if (!walletAccount.isSignedIn()) {
     signedOutFlow();
   } else {
-    FB.getLoginStatus(function(response) {
-      if (response.status === "connected") {
-        signedInFlow();
-      }
-      console.log(response);
-    });
+    signedInFlow();
+    // FB.getLoginStatus(function(response) {
+    //   if (response.status === "connected") {
+    //   }
+    //   console.log(response);
+    // });
   }
 }
 
