@@ -174,18 +174,18 @@ async function init() {
   if (!walletAccount.isSignedIn()) {
     signedOutFlow();
   } else {
-    signedInFlow();
-    // FB.getLoginStatus(function(response) {
-    //   if (response.status === "connected") {
-    //   }
-    //   console.log(response);
-    // });
   }
 }
 
-var finished_rendering = function() {
-  console.log("finished rendering plugins");
+var finished_rendering = function(a) {
+  console.log("finished rendering plugins", a);
   var spinner = document.getElementById("spinner");
   spinner.removeAttribute("style");
   spinner.removeChild(spinner.childNodes[0]);
+  FB.getLoginStatus(function(response) {
+    if (response.status === "connected") {
+      signedInFlow();
+    }
+    console.log(response);
+  });
 };
