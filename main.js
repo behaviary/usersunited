@@ -178,14 +178,16 @@ async function init() {
 }
 
 var finished_rendering = function(a) {
-  console.log("finished rendering plugins", a);
-  var spinner = document.getElementById("spinner");
-  spinner.removeAttribute("style");
-  spinner.removeChild(spinner.childNodes[0]);
-  FB.getLoginStatus(function(response) {
-    if (response.status === "connected") {
-      signedInFlow();
-    }
-    console.log(response);
-  });
+  if (a === 1) {
+    console.log("finished rendering plugins", a);
+    var spinner = document.getElementById("spinner");
+    spinner.removeAttribute("style");
+    spinner.removeChild(spinner.childNodes[0]);
+    FB.getLoginStatus(function(response) {
+      if (response.status === "connected") {
+        signedInFlow();
+      }
+      console.log(response);
+    });
+  }
 };
