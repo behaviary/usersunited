@@ -109,10 +109,12 @@ function signedInFlow() {
   // Focusing on the enter message field.
   $("#text-message").focus();
   $("#logout-button").click(() => {
-    Promise.all([FB.logout(), walletAccount.signOut()]).then((a, b) => {
+    walletAccount.signOut();
+    Promise.all([FB.logout()]).then(() => {
       // checkLoginState();
       $("#fb-login-button").show();
-      $("#near-login-button").show();
+      // $("#near-login-button").show();
+      signedOutFlow();
       $("#sign-in-container").removeClass("hidden");
       $("#guest-book-container").addClass("hidden");
       $("#logout-option").addClass("hidden");
