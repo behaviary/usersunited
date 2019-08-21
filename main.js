@@ -6,6 +6,7 @@ const appTitle = "Users United";
 let refreshTimeout;
 
 function signedOutFlow() {
+  $("#near-login-button").show();
   $("#near-login-button").click(() => {
     walletAccount.requestSignIn(
       // The contract name that would be authorized to be called by the user's account.
@@ -166,10 +167,10 @@ async function init() {
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
 
-  if (!walletAccount.isSignedIn()) {
-    signedOutFlow();
-  } else {
+  if (walletAccount.isSignedIn()) {
     $("#near-login-button").hide();
+  } else {
+    signedOutFlow();
   }
 }
 
@@ -206,8 +207,6 @@ function facebookSignin() {
     $("#fb-login-button").hide();
     if (walletAccount.isSignedIn()) {
       signedInFlow();
-    } else {
-      $("#near-login-button").show();
     }
   });
 }
