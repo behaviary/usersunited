@@ -112,6 +112,9 @@ function signedInFlow() {
       checkLoginState();
       $("#fb-login-button").show();
       $("#near-login-button").show();
+      $("#sign-in-container").removeClass("hidden");
+      $("#guest-book-container").addClass("hidden");
+      $("#logout-option").addClass("hidden");
     });
   });
   // Enablid enter key to send messages as well.
