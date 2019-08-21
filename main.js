@@ -6,7 +6,7 @@ const appTitle = "Users United";
 let refreshTimeout;
 
 function signedOutFlow() {
-  $("#login-button").click(() => {
+  $("#near-login-button").click(() => {
     walletAccount.requestSignIn(
       // The contract name that would be authorized to be called by the user's account.
       window.nearConfig.contractName,
@@ -105,25 +105,13 @@ function signedInFlow() {
   $("#guest-book-container").removeClass("hidden");
   $("#logout-option").removeClass("hidden");
 
-  FB.api("/me", { fields: ["picture", "name", "email"] }, function({
-    name,
-    id,
-    picture
-  }) {
-    Object.assign(fbData, { name, id, picture });
-    $(".account-id").text(name);
-    $("#fb-picture").attr("src", picture.data.url);
-    $("#fb-picture").attr("height", picture.data.height);
-  });
-
   // Focusing on the enter message field.
   $("#text-message").focus();
   $("#logout-button").click(() => {
     Promise.all([FB.logout(), walletAccount.signOut()]).then((a, b) => {
-      console.log(a, b);
-      // window.location.replace(
-      //   window.location.origin + window.location.pathname
-      // );
+      checkLoginState();
+      $("#fb-login-button").show();
+      $("#near-login-button").show();
     });
   });
   // Enablid enter key to send messages as well.
@@ -178,6 +166,7 @@ async function init() {
   if (!walletAccount.isSignedIn()) {
     signedOutFlow();
   } else {
+    $("#near-login-button").hide();
   }
 }
 
@@ -197,5 +186,19 @@ function checkLoginState() {
   FB.getLoginStatus(function(response) {
     // See the onlogin handler
     statusChangeCallback(response);
+  });
+}
+
+function facebookSignin() {
+  FB.api("/me", { fields: ["picture", "name", "email"] }, function({
+    name,
+    id,
+    picture
+  }) {
+    Object.assign(fbData, { name, id, picture });
+    $(".account-id").text(name);
+    $("#fb-picture").attr("src", picture.data.url);
+    $("#fb-picture").attr("height", picture.data.height);
+    $("#fb-login-button").hide();
   });
 }
