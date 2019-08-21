@@ -178,7 +178,8 @@ function statusChangeCallback(response) {
   console.log("statusChangeCallback");
   console.log(response); // The current login status of the person.
   if (response.status === "connected") {
-    signedInFlow();
+    // signedInFlow();
+    facebookSignin();
   } else {
     console.log("not signed in FB");
   }
@@ -203,5 +204,10 @@ function facebookSignin() {
     $("#fb-picture").attr("src", picture.data.url);
     $("#fb-picture").attr("height", picture.data.height);
     $("#fb-login-button").hide();
+    if (walletAccount.isSignedIn()) {
+      signedInFlow();
+    } else {
+      $("#near-login-button").show();
+    }
   });
 }
