@@ -178,16 +178,32 @@ async function init() {
 }
 
 var finished_rendering = function(a) {
-  if (a === 1) {
-    console.log("finished rendering plugins", a);
-    var spinner = document.getElementById("spinner");
-    spinner.removeAttribute("style");
-    spinner.removeChild(spinner.childNodes[0]);
-    FB.getLoginStatus(function(response) {
-      if (response.status === "connected") {
-        signedInFlow();
-      }
-      console.log(response);
-    });
-  }
+  console.log("finished rendering plugins", a);
+  // spinner.hidden = true;
+  // spinner.removeAttribute("style");
+  // spinner.removeChild(spinner.childNodes[0]);
+  // FB.getLoginStatus(function(response) {
+  //   if (response.status === "connected") {
+  //     signedInFlow();
+  //   }
+  //   console.log(response);
+  // });
 };
+function statusChangeCallback(response) {
+  // Called with the results from FB.getLoginStatus().
+  console.log("statusChangeCallback");
+  console.log(response); // The current login status of the person.
+  if (response.status === "connected") {
+    signedInFlow();
+  } else {
+    signedOutFlow();
+  }
+}
+
+function checkLoginState() {
+  // Called when a person is finished with the Login Button.
+  FB.getLoginStatus(function(response) {
+    // See the onlogin handler
+    statusChangeCallback(response);
+  });
+}
