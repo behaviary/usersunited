@@ -99,6 +99,7 @@ function submitMessage() {
 }
 const fbData = {};
 function signedInFlow() {
+  console.log("signedInFlow");
   // Hiding sign-in html parts and showing post message things
   $("#sign-in-container").addClass("hidden");
   $("#guest-book-container").removeClass("hidden");
@@ -118,9 +119,12 @@ function signedInFlow() {
   // Focusing on the enter message field.
   $("#text-message").focus();
   $("#logout-button").click(() => {
-    Promise.all([FB.logout(), walletAccount.signOut()]).then(() =>
-      window.location.replace(window.location.origin + window.location.pathname)
-    );
+    Promise.all([FB.logout(), walletAccount.signOut()]).then((a, b) => {
+      console.log(a, b);
+      // window.location.replace(
+      //   window.location.origin + window.location.pathname
+      // );
+    });
   });
   // Enablid enter key to send messages as well.
   $("#text-message").keypress(function(e) {
