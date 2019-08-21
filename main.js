@@ -110,7 +110,7 @@ function signedInFlow() {
   $("#text-message").focus();
   $("#logout-button").click(() => {
     Promise.all([FB.logout(), walletAccount.signOut()]).then((a, b) => {
-      checkLoginState();
+      // checkLoginState();
       $("#fb-login-button").show();
       $("#near-login-button").show();
       $("#sign-in-container").removeClass("hidden");
