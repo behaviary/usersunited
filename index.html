@@ -41,7 +41,6 @@
         });
 
         FB.AppEvents.logPageView();
-        FB.Event.subscribe("xfbml.render", finished_rendering);
         FB.getLoginStatus(function(response) {
           // Called after the JS SDK has been initialized.
           statusChangeCallback(response); // Returns the login status.

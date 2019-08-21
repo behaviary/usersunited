@@ -118,9 +118,9 @@ function signedInFlow() {
   // Focusing on the enter message field.
   $("#text-message").focus();
   $("#logout-button").click(() => {
-    walletAccount.signOut();
-    FB.logout();
-    window.location.replace(window.location.origin + window.location.pathname);
+    Promise.all([FB.logout(), walletAccount.signOut()]).then(() =>
+      window.location.replace(window.location.origin + window.location.pathname)
+    );
   });
   // Enablid enter key to send messages as well.
   $("#text-message").keypress(function(e) {
@@ -177,18 +177,6 @@ async function init() {
   }
 }
 
-var finished_rendering = function(a) {
-  console.log("finished rendering plugins", a);
-  // spinner.hidden = true;
-  // spinner.removeAttribute("style");
-  // spinner.removeChild(spinner.childNodes[0]);
-  // FB.getLoginStatus(function(response) {
-  //   if (response.status === "connected") {
-  //     signedInFlow();
-  //   }
-  //   console.log(response);
-  // });
-};
 function statusChangeCallback(response) {
   // Called with the results from FB.getLoginStatus().
   console.log("statusChangeCallback");
@@ -196,7 +184,7 @@ function statusChangeCallback(response) {
   if (response.status === "connected") {
     signedInFlow();
   } else {
-    signedOutFlow();
+    console.log("not signed in FB");
   }
 }
 
