@@ -1,21 +1,25 @@
-import { context, storage, near, collections } from "./near";
-import { PostedMessage } from "./model.near";
-const MESSAGE_LIMIT = 10;
-let messages = collections.vector<PostedMessage>("m");
-export function addMessage(text: string, id: string, name: string): void {
-  let message: PostedMessage = { id, text, name };
-  storage.setString(id, text);
+import { storage, PersistentVector } from "near-runtime-ts";
+import { PostedMessage } from "./model";
+let messages = new PersistentVector<PostedMessage>("m");
+export function addMessage(
+  text: string,
+  id: string,
+  name: string,
+  photo: string,
+  email: string,
+  date: string
+): void {
+  let message: PostedMessage = {
+    id,
+    text,
+    name,
+    photo,
+    date,
+    email,
+    index: 0
+  };
+  storage.setString(id, date);
   messages.push(message);
-}
-
-export function getMessages(): Array<PostedMessage> {
-  let numMessages = min(MESSAGE_LIMIT, messages.length);
-  let startIndex = messages.length - numMessages;
-  let result = Array.create<PostedMessage>(numMessages);
-  for (let i = 0; i < numMessages; i++) {
-    result[i] = messages[i + startIndex];
-  }
-  return result;
 }
 
 export function getRangeMessages(start: i32 = 0): Array<PostedMessage> {
@@ -25,7 +29,7 @@ export function getRangeMessages(start: i32 = 0): Array<PostedMessage> {
     let startIndex = start;
     for (let i = 0; i < numMessages; i++) {
       result[i] = messages[i + startIndex];
-      result[i].index = <u64>i + startIndex;
+      result[i].index = i + startIndex;
     }
   }
   return result;

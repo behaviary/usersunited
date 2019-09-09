@@ -6,7 +6,8 @@ const appTitle = "Users United";
 let refreshTimeout;
 
 function signedOutFlow() {
-  $("#login-button").click(() => {
+  $("#near-login-button").show();
+  $("#near-login-button").click(() => {
     walletAccount.requestSignIn(
       // The contract name that would be authorized to be called by the user's account.
       window.nearConfig.contractName,
@@ -99,28 +100,25 @@ function submitMessage() {
 }
 const fbData = {};
 function signedInFlow() {
+  console.log("signedInFlow");
   // Hiding sign-in html parts and showing post message things
   $("#sign-in-container").addClass("hidden");
   $("#guest-book-container").removeClass("hidden");
   $("#logout-option").removeClass("hidden");
 
-  FB.api("/me", { fields: ["picture", "name", "email"] }, function({
-    name,
-    id,
-    picture
-  }) {
-    Object.assign(fbData, { name, id, picture });
-    $(".account-id").text(name);
-    $("#fb-picture").attr("src", picture.data.url);
-    $("#fb-picture").attr("height", picture.data.height);
-  });
-
   // Focusing on the enter message field.
   $("#text-message").focus();
   $("#logout-button").click(() => {
     walletAccount.signOut();
-    FB.logout();
-    window.location.replace(window.location.origin + window.location.pathname);
+    Promise.all([FB.logout()]).then(() => {
+      // checkLoginState();
+      $("#fb-login-button").show();
+      // $("#near-login-button").show();
+      signedOutFlow();
+      $("#sign-in-container").removeClass("hidden");
+      $("#guest-book-container").addClass("hidden");
+      $("#logout-option").addClass("hidden");
+    });
   });
   // Enablid enter key to send messages as well.
   $("#text-message").keypress(function(e) {
@@ -171,21 +169,46 @@ async function init() {
   $("#refresh-button").click(refreshMessages);
   refreshMessages();
 
-  if (!walletAccount.isSignedIn()) {
-    signedOutFlow();
+  if (walletAccount.isSignedIn()) {
+    $("#near-login-button").hide();
   } else {
-    FB.getLoginStatus(function(response) {
-      if (response.status === "connected") {
-        signedInFlow();
-      }
-      console.log(response);
-    });
+    signedOutFlow();
   }
 }
 
-var finished_rendering = function() {
-  console.log("finished rendering plugins");
-  var spinner = document.getElementById("spinner");
-  spinner.removeAttribute("style");
-  spinner.removeChild(spinner.childNodes[0]);
-};
+function statusChangeCallback(response) {
+  // Called with the results from FB.getLoginStatus().
+  console.log("statusChangeCallback");
+  console.log(response); // The current login status of the person.
+  if (response.status === "connected") {
+    // signedInFlow();
+    facebookSignin();
+  } else {
+    console.log("not signed in FB");
+  }
+}
+
+function checkLoginState() {
+  // Called when a person is finished with the Login Button.
+  FB.getLoginStatus(function(response) {
+    // See the onlogin handler
+    statusChangeCallback(response);
+  });
+}
+
+function facebookSignin() {
+  FB.api("/me", { fields: ["picture", "name", "email"] }, function({
+    name,
+    id,
+    picture
+  }) {
+    Object.assign(fbData, { name, id, picture });
+    $(".account-id").text(name);
+    $("#fb-picture").attr("src", picture.data.url);
+    $("#fb-picture").attr("height", picture.data.height);
+    $("#fb-login-button").hide();
+    if (walletAccount.isSignedIn()) {
+      signedInFlow();
+    }
+  });
+}

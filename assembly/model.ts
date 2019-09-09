@@ -4,5 +4,7 @@ export class PostedMessage {
   name: string;
   text: string;
   index: u64;
-  // date: string;
+  date: string;
+  photo: string;
+  email: string;
 }

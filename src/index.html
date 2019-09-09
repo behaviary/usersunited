@@ -41,7 +41,10 @@
         });
 
         FB.AppEvents.logPageView();
-        FB.Event.subscribe("xfbml.render", finished_rendering);
+        FB.getLoginStatus(function(response) {
+          // Called after the JS SDK has been initialized.
+          statusChangeCallback(response); // Returns the login status.
+        });
         init().catch(console.error);
       };
 
@@ -145,25 +148,13 @@
         <h2>Hello stranger! Who are you?</h2>
         <div id="login-form">
           <div class="col-md-4">
-            <button id="login-button">near login</button>
-            <div
-              id="spinner"
-              style="
-                background: #4267b2;
-                border-radius: 5px;
-                color: white;
-                height: 40px;
-                text-align: center;
-                width: 250px;"
-            >
-              Loading
-              <div
-                class="fb-login-button"
-                data-max-rows="1"
-                data-size="large"
-                data-button-type="continue_with"
-                data-use-continue-as="true"
-              ></div>
+            <button id="near-login-button">near login</button>
+            <div id="fb-login-button">
+              <fb:login-button
+                scope="public_profile,email"
+                onlogin="checkLoginState();"
+              >
+              </fb:login-button>
             </div>
           </div>
         </div>
